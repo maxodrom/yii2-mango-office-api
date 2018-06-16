@@ -16,7 +16,7 @@ use yii\di\Instance;
 
 /**
  * Class Module
- * @package maxodrom\leadgen
+ * @package maxodrom\mangooffice
  * @since 1.0
  */
 class Module extends \yii\base\Module implements BootstrapInterface
