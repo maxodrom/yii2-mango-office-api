@@ -30,7 +30,7 @@ class m180617_013436_create_table_events_summary extends Migration
                 'from_extension' => $this->string(16)->null()->comment('Идентификатор сотрудника ВАТС для вызывающего абонента'),
                 'from_number' => $this->string(32)->null()->comment('Номер вызывающего абонента'),
                 'to_extension' => $this->string(16)->null()->comment('Идентификатор сотрудника ВАТС для вызываемого абонента'),
-                'to_number' => $this->string(16)->null()->comment('Номер вызываемого абонента'),
+                'to_number' => $this->string(32)->null()->comment('Номер вызываемого абонента'),
                 'line_number' => $this->string(16)->null()->comment('Входящая линия ВАТС, на которую поступил вызов'),
                 'dct_number' => $this->string(128)->null()->comment('Номер коллтрекинга (динамический или статический)'),
                 'dct_type' => $this->tinyInteger(1)->unsigned()->null()->comment('Тип номера коллтрекинга'),

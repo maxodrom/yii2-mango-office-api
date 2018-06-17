@@ -80,12 +80,12 @@ class Call extends \yii\db\ActiveRecord
                 'max' => 128,
             ],
             [
-                ['call_state', 'from_extension', 'to_extension', 'to_number', 'to_line_number'],
+                ['call_state', 'from_extension', 'to_extension', 'to_line_number'],
                 'string',
                 'max' => 16,
             ],
             [
-                'from_number',
+                ['from_number', 'to_number'],
                 'string',
                 'max' => 32,
             ],

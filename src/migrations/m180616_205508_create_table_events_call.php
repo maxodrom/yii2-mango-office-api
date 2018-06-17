@@ -36,7 +36,7 @@ class m180616_205508_create_table_events_call extends Migration
                 'from_number' => $this->string(32)->null()->comment('Номер вызывающего абонента'),
                 'from_taken_from_call_id' => $this->string(128)->null()->comment('Идентификатор вызова, в котором участвовал вызывающий абонент, до того, как был переведен в текущий вызов'),
                 'to_extension' => $this->string(16)->null()->comment('Идентификатор сотрудника ВАТС для вызываемого абонента'),
-                'to_number' => $this->string(16)->null()->comment('Номер вызываемого абонента'),
+                'to_number' => $this->string(32)->null()->comment('Номер вызываемого абонента'),
                 'to_line_number' => $this->string(16)->null()->comment('Входящая линия ВАТС, на которую поступил вызов'),
                 'to_acd_group' => $this->string(128)->null()->comment('Идентификатор группы операторов ВАТС (внутренний номер группы)'),
                 'dct_number' => $this->string(128)->null()->comment('Номер коллтрекинга (динамический или статический)'),

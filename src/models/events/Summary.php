@@ -52,9 +52,9 @@ class Summary extends \yii\db\ActiveRecord
                 'integer',
             ],
             [['entry_id', 'dct_number'], 'string', 'max' => 128],
-            [['from_extension', 'to_extension', 'to_number', 'line_number'], 'string', 'max' => 16],
+            [['from_extension', 'to_extension', 'line_number'], 'string', 'max' => 16],
             [
-                'from_number',
+                ['from_number', 'to_number'],
                 'string',
                 'max' => 32,
             ],
