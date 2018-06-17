@@ -56,7 +56,7 @@ class Summary extends \yii\db\ActiveRecord
             [
                 ['from_number', 'to_number'],
                 'string',
-                'max' => 32,
+                'max' => 64,
             ],
             [['disconnect_reason'], 'integer'],
         ];

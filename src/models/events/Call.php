@@ -87,7 +87,7 @@ class Call extends \yii\db\ActiveRecord
             [
                 ['from_number', 'to_number'],
                 'string',
-                'max' => 32,
+                'max' => 64,
             ],
             [['location'], 'string', 'max' => 7],
             [['disconnect_reason'], 'integer'],
