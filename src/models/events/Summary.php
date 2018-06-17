@@ -52,8 +52,13 @@ class Summary extends \yii\db\ActiveRecord
                 'integer',
             ],
             [['entry_id', 'dct_number'], 'string', 'max' => 128],
-            [['from_extension', 'from_number', 'to_extension', 'to_number', 'line_number'], 'string', 'max' => 16],
-            [['disconnect_reason'], 'string', 'max' => 8],
+            [['from_extension', 'to_extension', 'to_number', 'line_number'], 'string', 'max' => 16],
+            [
+                'from_number',
+                'string',
+                'max' => 32,
+            ],
+            [['disconnect_reason'], 'integer'],
         ];
     }
 
