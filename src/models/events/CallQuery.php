@@ -13,6 +13,7 @@ namespace maxodrom\mangooffice\models\events;
  * This is the ActiveQuery class for [[Call]].
  *
  * @see \maxodrom\mangooffice\models\events\Call
+ * @since 1.0
  */
 class CallQuery extends \yii\db\ActiveQuery
 {
