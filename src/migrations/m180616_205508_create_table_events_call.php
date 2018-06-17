@@ -57,6 +57,7 @@ class m180616_205508_create_table_events_call extends Migration
             'from_number',
             'to_number',
             'to_line_number',
+            'disconnect_reason',
         ];
 
         foreach ($indexes as $index) {
