@@ -34,6 +34,14 @@ use Yii;
 class Summary extends \yii\db\ActiveRecord
 {
     /**
+     * Class constants.
+     */
+    const CALL_DIRECTION_INNER = 0;
+    const CALL_DIRECTION_INCOMING = 1;
+    const CALL_DIRECTION_OUTGOING = 2;
+
+
+    /**
      * {@inheritdoc}
      */
     public static function tableName()
@@ -50,6 +58,15 @@ class Summary extends \yii\db\ActiveRecord
             [
                 ['call_direction', 'dct_type', 'create_time', 'forward_time', 'talk_time', 'end_time', 'entry_result'],
                 'integer',
+            ],
+            [
+                'call_direction',
+                'in',
+                'range' => [
+                    self::CALL_DIRECTION_INNER,
+                    self::CALL_DIRECTION_INCOMING,
+                    self::CALL_DIRECTION_OUTGOING,
+                ],
             ],
             [['entry_id', 'dct_number'], 'string', 'max' => 128],
             [['from_extension', 'to_extension', 'line_number'], 'string', 'max' => 16],
@@ -94,5 +111,29 @@ class Summary extends \yii\db\ActiveRecord
     public static function find()
     {
         return new SummaryQuery(get_called_class());
+    }
+
+    /**
+     * @return array
+     */
+    final public static function getCallDirectionLabels()
+    {
+        return [
+            self::CALL_DIRECTION_INNER => 'внутренний',
+            self::CALL_DIRECTION_INCOMING => 'входящий',
+            self::CALL_DIRECTION_OUTGOING => 'исходящий',
+        ];
+    }
+
+    /**
+     * @return array
+     */
+    final public static function getCallDirectionLabelsCssClasses()
+    {
+        return [
+            self::CALL_DIRECTION_INNER => 'primary',
+            self::CALL_DIRECTION_INCOMING => 'success',
+            self::CALL_DIRECTION_OUTGOING => 'danger',
+        ];
     }
 }
