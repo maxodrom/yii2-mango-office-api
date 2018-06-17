@@ -11,6 +11,7 @@ namespace maxodrom\mangooffice;
 
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\base\InvalidConfigException;
 use yii\db\Connection;
 use yii\di\Instance;
 
@@ -26,6 +27,14 @@ class Module extends \yii\base\Module implements BootstrapInterface
      * @var \yii\db\Connection|array|string DB component.
      */
     public $db = 'db';
+    /**
+     * @var string
+     */
+    public $apiKey;
+    /**
+     * @var string
+     */
+    public $apiSalt;
 
 
     /**
@@ -35,6 +44,17 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
         $this->db = Instance::ensure($this->db, Connection::class);
+
+        if (!is_string($this->apiKey)) {
+            throw new InvalidConfigException(
+                'apiKey module property must be set.'
+            );
+        }
+        if (!is_string($this->apiSalt)) {
+            throw new InvalidConfigException(
+                'apiSalt module property must be set.'
+            );
+        }
     }
 
     /**
