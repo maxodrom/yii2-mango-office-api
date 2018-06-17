@@ -19,7 +19,8 @@
   "require": {
     "yiisoft/yii2": "~2.0.14",
     "yiisoft/yii2-bootstrap": "~2.0.0",
-    "rmrevin/yii2-fontawesome": "~2.17"
+    "rmrevin/yii2-fontawesome": "~2.17",
+    "giggsey/libphonenumber-for-php": "^8.9"
   },
   "require-dev": {
     "yiisoft/yii2-gii": "~2.0.0",
