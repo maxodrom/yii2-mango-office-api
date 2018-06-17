@@ -28,7 +28,7 @@ class m180617_013436_create_table_events_summary extends Migration
                 'entry_id' => $this->string(128)->null()->comment('Идентификатор группы вызовов'),
                 'call_direction' => $this->tinyInteger(1)->null()->comment('Направление вызова'),
                 'from_extension' => $this->string(16)->null()->comment('Идентификатор сотрудника ВАТС для вызывающего абонента'),
-                'from_number' => $this->string(16)->null()->comment('Номер вызывающего абонента'),
+                'from_number' => $this->string(32)->null()->comment('Номер вызывающего абонента'),
                 'to_extension' => $this->string(16)->null()->comment('Идентификатор сотрудника ВАТС для вызываемого абонента'),
                 'to_number' => $this->string(16)->null()->comment('Номер вызываемого абонента'),
                 'line_number' => $this->string(16)->null()->comment('Входящая линия ВАТС, на которую поступил вызов'),
@@ -39,7 +39,7 @@ class m180617_013436_create_table_events_summary extends Migration
                 'talk_time' => $this->integer(11)->unsigned()->null()->comment('Время ответа на вызов сотрудником или внешним абонентом'),
                 'end_time' => $this->integer(11)->unsigned()->null()->comment('Время завершения всего разговора'),
                 'entry_result' => $this->tinyInteger(1)->unsigned()->null()->comment('Результат вызова'),
-                'disconnect_reason' => $this->string(8)->null()->comment('Причина завершения вызова'),
+                'disconnect_reason' => $this->smallInteger(4)->unsigned()->null()->comment('Причина завершения вызова'),
             ],
             $this->getTableOptions()
         );
