@@ -9,15 +9,17 @@
 
 namespace maxodrom\mangooffice\controllers;
 
-use maxodrom\mangooffice\models\events\Call;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\Response;
+use maxodrom\mangooffice\models\events\Call;
+use maxodrom\mangooffice\models\events\Summary;
 
 /**
  * Class EventsController
+ *
  * @package maxodrom\mangooffice\controllers
  * @since 1.0
  */
@@ -50,6 +52,7 @@ class EventsController extends BaseController
     {
         $disableCsrfValidationActions = [
             'call',
+            'summary',
         ];
 
         // your custom code here, if you want the code to run before action filters,
@@ -84,6 +87,12 @@ class EventsController extends BaseController
     }
 
     /**
+     * Уведомление содержит информацию о вызове и его параметрах.
+     * Прохождение вызова через IVR, очередь вызовов, размещение на абонента
+     * сопровождаются рассылкой уведомления о новом вызове.
+     * Завершение пребывания в очереди, IVR сопровождается рассылкой события о
+     * завершении соответствующего вызова.
+     *
      * @return array
      * @throws \yii\web\ServerErrorHttpException
      */
@@ -117,12 +126,59 @@ class EventsController extends BaseController
         if (!$model->save()) {
             $message = 'Cannot save Call model. Possible validation errors: ' . Html::errorSummary($model);
             Yii::error($message, __METHOD__);
-            throw new \yii\web\ServerErrorHttpException();
+            throw new \yii\web\ServerErrorHttpException(
+                YII_DEBUG ? $message : ''
+            );
         }
 
         return [
             'success' => true,
             'message' => 'Call notification was stored successfully.',
+        ];
+    }
+
+    /**
+     * Уведомление содержит основную информацию о звонке после его окончания и служит
+     * индикатором окончания разговора. Генерируется как финализирующее событие по звонку.
+     * После получения данного события вызов можно считать завершенным.
+     *
+     * @return array
+     * @throws \yii\web\ServerErrorHttpException
+     */
+    public function actionSummary()
+    {
+        $json = Json::decode(Yii::$app->request->getBodyParam('json', '{}'));
+
+        $model = new Summary();
+        $model->setAttributes([
+            'entry_id' => ArrayHelper::getValue($json, 'entry_id'),
+            'call_direction' => ArrayHelper::getValue($json, 'call_direction'),
+            'from_extension' => ArrayHelper::getValue($json, 'from.extension'),
+            'from_number' => ArrayHelper::getValue($json, 'from.number'),
+            'to_extension' => ArrayHelper::getValue($json, 'to.extension'),
+            'to_number' => ArrayHelper::getValue($json, 'to.number'),
+            'line_number' => ArrayHelper::getValue($json, 'line_number'),
+            'dct_number' => ArrayHelper::getValue($json, 'dct.number'),
+            'dct_type' => ArrayHelper::getValue($json, 'dct.type'),
+            'create_time' => ArrayHelper::getValue($json, 'create_time'),
+            'forward_time' => ArrayHelper::getValue($json, 'forward_time'),
+            'talk_time' => ArrayHelper::getValue($json, 'talk_time'),
+            'end_time' => ArrayHelper::getValue($json, 'end_time'),
+            'entry_result' => ArrayHelper::getValue($json, 'entry_result'),
+            'disconnect_reason' => ArrayHelper::getValue($json, 'disconnect_reason'),
+        ], false);
+
+        if (!$model->save()) {
+            $message = 'Cannot save Summary model. Possible validation errors: ' . Html::errorSummary($model);
+            Yii::error($message, __METHOD__);
+            throw new \yii\web\ServerErrorHttpException(
+                YII_DEBUG ? $message : ''
+            );
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Summary notification was stored successfully.',
         ];
     }
 }
