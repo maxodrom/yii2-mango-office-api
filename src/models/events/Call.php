@@ -34,9 +34,22 @@ use Yii;
  * @property string $command_id Идентификатор команды внешней системы, в результате которой появился вызов
  * @property string $task_id Идентификатор задачи исходящего обзвона, в результате которой появился вызов
  * @property string $callback_initiator Инициатор обратного звонка, в результате которого появился вызов
+ * @since 1.0
  */
 class Call extends \yii\db\ActiveRecord
 {
+    /**
+     * Class constants.
+     */
+    const CALL_STATE_APPEARED = 'Appeared';
+    const CALL_STATE_CONNECTED = 'Connected';
+    const CALL_STATE_DISCONNECTED = 'Disconnected';
+    const CALL_STATE_ON_HOLD = 'OnHold';
+    const LOCATION_IVR = 'ivr';
+    const LOCATION_QUEUE = 'queue';
+    const LOCATION_ABONENT = 'abonent';
+
+
     /**
      * {@inheritdoc}
      */
@@ -52,10 +65,46 @@ class Call extends \yii\db\ActiveRecord
     {
         return [
             [['timestamp', 'seq', 'dct_type'], 'integer'],
-            [['entry_id', 'call_id', 'from_taken_from_call_id', 'to_acd_group', 'dct_number', 'command_id', 'task_id', 'callback_initiator'], 'string', 'max' => 128],
-            [['call_state', 'from_extension', 'from_number', 'to_extension', 'to_number', 'to_line_number'], 'string', 'max' => 16],
+            [
+                [
+                    'entry_id',
+                    'call_id',
+                    'from_taken_from_call_id',
+                    'to_acd_group',
+                    'dct_number',
+                    'command_id',
+                    'task_id',
+                    'callback_initiator',
+                ],
+                'string',
+                'max' => 128,
+            ],
+            [
+                ['call_state', 'from_extension', 'from_number', 'to_extension', 'to_number', 'to_line_number'],
+                'string',
+                'max' => 16,
+            ],
             [['location'], 'string', 'max' => 7],
             [['disconnect_reason'], 'string', 'max' => 8],
+            [
+                'call_state',
+                'in',
+                'range' => [
+                    self::CALL_STATE_APPEARED,
+                    self::CALL_STATE_CONNECTED,
+                    self::CALL_STATE_DISCONNECTED,
+                    self::CALL_STATE_ON_HOLD,
+                ],
+            ],
+            [
+                'location',
+                'in',
+                'range' => [
+                    self::LOCATION_IVR,
+                    self::LOCATION_ABONENT,
+                    self::LOCATION_QUEUE,
+                ],
+            ],
         ];
     }
 
