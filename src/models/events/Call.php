@@ -286,4 +286,34 @@ class Call extends \yii\db\ActiveRecord
             self::CALL_STATE_ON_HOLD => 'warning',
         ];
     }
+
+    /**
+     * Возвращает текущее расположение
+     * вызова в ВАТС.
+     *
+     * @return array
+     */
+    final public static function getLocationLabels()
+    {
+        return [
+            self::LOCATION_IVR => 'Голосовое меню',
+            self::LOCATION_ABONENT => 'Сотрудник ВАТС',
+            self::LOCATION_QUEUE => 'Очередь',
+        ];
+    }
+
+    /**
+     * Возвращает мэппинг CSS-классов для текущего
+     * расположения вызова в ВАТС.
+     *
+     * @return array
+     */
+    final public static function getLocationCssClass()
+    {
+        return [
+            self::LOCATION_IVR => 'info',
+            self::LOCATION_ABONENT => 'success',
+            self::LOCATION_QUEUE => 'default',
+        ];
+    }
 }
