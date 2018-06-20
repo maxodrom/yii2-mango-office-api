@@ -25,7 +25,6 @@ $this->title = 'Уведомления о завершении вызова';
 ?>
 <div class="panel">
     <div class="panel-body">
-
         <?php Pjax::begin(); ?>
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
@@ -190,6 +189,5 @@ $this->title = 'Уведомления о завершении вызова';
             ],
         ]) ?>
         <?php Pjax::end(); ?>
-
     </div>
 </div>
