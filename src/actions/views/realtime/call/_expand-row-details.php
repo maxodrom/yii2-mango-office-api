@@ -13,7 +13,6 @@ use maxodrom\mangooffice\models\events\Call;
             <tr>
                 <td>Время события</td>
                 <td>Расположение</td>
-                <td>SEQ</td>
                 <td>Состояние</td>
                 <td>Номер вызываемого абонента</td>
                 <td>Причина завершения вызова</td>
@@ -29,9 +28,6 @@ use maxodrom\mangooffice\models\events\Call;
                         <span class="label label-<?= Call::getLocationCssClass()[$model->location] ?>">
                             <?= Call::getLocationLabels()[$model->location] ?>
                         </span>
-                    </td>
-                    <td>
-                        <?= $model->seq ?>
                     </td>
                     <td>
                         <span class="label label-<?= Call::getCallStateCssClass()[$model->call_state] ?>">
