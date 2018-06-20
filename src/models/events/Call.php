@@ -256,4 +256,34 @@ class Call extends \yii\db\ActiveRecord
     {
         return new CallQuery(get_called_class());
     }
+
+    /**
+     * Возвращает текущее состояние вызова.
+     *
+     * @return array
+     */
+    final public static function getCallStateLabels()
+    {
+        return [
+            self::CALL_STATE_APPEARED => 'Появился',
+            self::CALL_STATE_CONNECTED => 'Соединен',
+            self::CALL_STATE_DISCONNECTED => 'Отсоединен',
+            self::CALL_STATE_ON_HOLD => 'На удержании',
+        ];
+    }
+
+    /**
+     * Возвращает мэппинг CSS-классов для состояния звонка.
+     *
+     * @return array
+     */
+    final public static function getCallStateCssClass()
+    {
+        return [
+            self::CALL_STATE_APPEARED => 'info',
+            self::CALL_STATE_CONNECTED => 'success',
+            self::CALL_STATE_DISCONNECTED => 'danger',
+            self::CALL_STATE_ON_HOLD => 'warning',
+        ];
+    }
 }
