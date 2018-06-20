@@ -20,7 +20,7 @@ use maxodrom\mangooffice\models\events\Summary;
  */
 class IndexAction extends BaseAction
 {
-    public $viewFile = '@mangooffice/actions/views/realtime/index';
+    public $viewFile = '@mangooffice/actions/views/realtime/summary/index';
 
     /**
      * @return string
