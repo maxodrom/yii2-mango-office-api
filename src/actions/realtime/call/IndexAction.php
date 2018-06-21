@@ -7,20 +7,20 @@
  * @copyright Copyright (c) Max Alexandrov, 2018
  */
 
-namespace maxodrom\mangooffice\actions\realtime\summary;
+namespace maxodrom\mangooffice\actions\realtime\call;
 
 use yii\data\ActiveDataProvider;
 use maxodrom\mangooffice\actions\BaseAction;
-use maxodrom\mangooffice\models\events\Summary;
+use maxodrom\mangooffice\models\events\Call;
 
 /**
  * Class IndexAction
  *
- * @package maxodrom\mangooffice\actions\realtime\summary
+ * @package maxodrom\mangooffice\actions\realtime\call
  */
 class IndexAction extends BaseAction
 {
-    public $viewFile = '@mangooffice/actions/views/realtime/summary/index';
+    public $viewFile = '@mangooffice/actions/views/realtime/call/index';
 
     /**
      * @return string
@@ -29,10 +29,10 @@ class IndexAction extends BaseAction
     {
         $dataProvider = new ActiveDataProvider([
             'query' =>
-                Summary::find()
-                    ->orderBy([
-                        'id' => SORT_DESC,
-                    ])
+                Call::find()
+                    ->groupBy([
+                        'entry_id',
+                    ]),
         ]);
 
         return $this->controller->render($this->viewFile, [
