@@ -22,6 +22,11 @@ use yii\di\Instance;
  */
 class Module extends \yii\base\Module implements BootstrapInterface
 {
+    /**
+     * Module name constant.
+     */
+    const MODULE_NAME = 'mangooffice';
+
     public $controllerNamespace = 'maxodrom\mangooffice\controllers';
     /**
      * @var \yii\db\Connection|array|string DB component.
@@ -82,8 +87,18 @@ class Module extends \yii\base\Module implements BootstrapInterface
         if (!parent::beforeAction($action)) {
             return false;
         }
-        $this->db->tablePrefix = $this->id . '_';
+        $this->db->tablePrefix = self::getTablePrefix();
 
         return true;
+    }
+
+    /**
+     * Builds table name prefix based on module name.
+     *
+     * @return string
+     */
+    final public static function getTablePrefix()
+    {
+        return self::MODULE_NAME . '_';
     }
 }

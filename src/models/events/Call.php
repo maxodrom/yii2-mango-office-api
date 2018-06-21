@@ -10,6 +10,7 @@
 namespace maxodrom\mangooffice\models\events;
 
 use Yii;
+use maxodrom\mangooffice\Module;
 
 /**
  * This is the model class for table "{{%events_call}}".
@@ -49,8 +50,10 @@ class Call extends \yii\db\ActiveRecord
     const LOCATION_QUEUE = 'queue';
     const LOCATION_ABONENT = 'abonent';
 
+    /**
+     * @var array Статусы результатов выполнения
+     */
     public static $resultStatuses = [
-
         1000 => 'Действие успешно выполнено',
         1100 => 'Вызов завершен в нормальном режиме',
         1110 => 'Вызов завершен вызывающим абонентом',
@@ -156,7 +159,7 @@ class Call extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'mangooffice_events_call';
+        return Module::getTablePrefix() . 'events_call';
     }
 
     /**

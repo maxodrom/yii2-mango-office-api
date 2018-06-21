@@ -10,6 +10,7 @@
 namespace maxodrom\mangooffice\models\events;
 
 use Yii;
+use maxodrom\mangooffice\Module;
 
 /**
  * This is the model class for table "mangooffice_events_summary".
@@ -46,7 +47,7 @@ class Summary extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'mangooffice_events_summary';
+        return Module::getTablePrefix() . 'events_summary';
     }
 
     /**
