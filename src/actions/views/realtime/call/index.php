@@ -13,9 +13,13 @@ use yii\helpers\Html;
 use rmrevin\yii\fontawesome\FA;
 use maxodrom\mangooffice\models\events\Call;
 use kartik\grid\GridView;
+use libphonenumber\PhoneNumberUtil;
+use libphonenumber\PhoneNumberFormat;
 
 /** @var \yii\web\View $this */
 /** @var \yii\data\ActiveDataProvider $dataProvider */
+
+$phoneNumberUtil = PhoneNumberUtil::getInstance();
 
 $this->title = 'Детализация звонков';
 
@@ -47,10 +51,23 @@ CSS
                     'format' => 'raw',
                     'value' => function ($model) {
                         /** @var \maxodrom\mangooffice\models\events\Call $model */
-                        return Html::a(
-                            !empty($model->entry_id) ? base64_decode($model->entry_id) : ''
-                        );
+                        return base64_decode($model->entry_id);
                     },
+                    'headerOptions' => [
+                        'style' => 'width:200px;',
+                    ],
+                ],
+                [
+                    'attribute' => 'timestamp',
+                    'header' => 'Начало звонка',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        /** @var \maxodrom\mangooffice\models\events\Call $model */
+                        return Yii::$app->formatter->asDatetime($model->timestamp);
+                    },
+                    'headerOptions' => [
+                        'style' => 'width:200px;',
+                    ],
                 ],
                 [
                     'class' => 'kartik\grid\ExpandRowColumn',
@@ -82,13 +99,16 @@ CSS
                 [
                     'attribute' => 'from_number',
                     'format' => 'raw',
-                    'value' => function ($model) {
+                    'value' => function ($model) use ($phoneNumberUtil) {
                         /** @var \maxodrom\mangooffice\models\events\Call $model */
-                        return Html::a(
-                            !empty($model->from_number) ? $model->from_number : '',
-                            null,
+                        $fromNumberObject = $phoneNumberUtil->parse($model->from_number, 'RU');
+                        $fromNumber = $phoneNumberUtil->format($fromNumberObject, PhoneNumberFormat::INTERNATIONAL);
+
+                        return Html::tag(
+                            'span',
+                            $fromNumber,
                             [
-                                'class' => 'text-success',
+                                'class' => 'label label-primary',
                             ]
                         );
                     },

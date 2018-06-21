@@ -91,7 +91,7 @@ echo GridView::widget([
             'header' => 'Причина завершения вызова',
             'value' => function ($model) {
                 /** @var Call $model */
-                return $model->disconnect_reason != null ?
+                $str = $model->disconnect_reason != null ?
                     Html::tag(
                         'span',
                         $model->disconnect_reason,
@@ -100,6 +100,12 @@ echo GridView::widget([
                             'title' => Call::$resultStatuses[$model->disconnect_reason],
                         ]
                     ) : '';
+
+                if ($model->disconnect_reason != null) {
+                    $str .= ' ' . Call::$resultStatuses[$model->disconnect_reason];
+                }
+
+                return $str;
             },
         ],
     ],

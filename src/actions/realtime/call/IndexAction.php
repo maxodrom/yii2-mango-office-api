@@ -11,6 +11,7 @@ namespace maxodrom\mangooffice\actions\realtime\call;
 
 use yii\data\ActiveDataProvider;
 use maxodrom\mangooffice\models\events\Call;
+use yii\db\Expression;
 
 /**
  * Class IndexAction
@@ -29,9 +30,35 @@ class IndexAction extends BaseAction
         $dataProvider = new ActiveDataProvider([
             'query' =>
                 Call::find()
-                    ->groupBy([
+                    ->select([
+                        'timestamp' => new Expression('MIN(c.timestamp)'),
                         'entry_id',
-                    ]),
+                        'call_id',
+                        'seq',
+                        'call_state',
+                        'location',
+                        'from_extension',
+                        'from_number',
+                        'from_taken_from_call_id',
+                        'to_extension',
+                        'to_number',
+                        'to_line_number',
+                        'to_acd_group',
+                        'dct_number',
+                        'dct_type',
+                        'disconnect_reason',
+                        'command_id',
+                        'task_id',
+                        'callback_initiator',
+                    ])
+                    ->alias('c')
+                    ->groupBy([
+                        'c.entry_id',
+                    ])
+                    ->orderBy([
+                        'c.id' => SORT_DESC,
+                    ])
+                    ->having(new Expression('MIN(c.timestamp)')),
         ]);
 
         return $this->controller->render($this->viewFile, [
