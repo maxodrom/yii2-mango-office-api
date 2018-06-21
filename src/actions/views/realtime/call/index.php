@@ -85,6 +85,9 @@ CSS
                                     'timestamp' => SORT_ASC,
                                 ])
                                 ->all(),
+                            'pagination' => [
+                                'pageSize' => 0, // infinite (all items)
+                            ],
                         ]);
 
                         return Yii::$app->controller->renderPartial(
