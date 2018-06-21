@@ -10,7 +10,6 @@
 namespace maxodrom\mangooffice\actions\realtime\call;
 
 use yii\data\ActiveDataProvider;
-use maxodrom\mangooffice\actions\BaseAction;
 use maxodrom\mangooffice\models\events\Call;
 
 /**
