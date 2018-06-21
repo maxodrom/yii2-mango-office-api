@@ -18,12 +18,30 @@ echo GridView::widget([
     'summary' => false,
     'columns' => [
         [
+            'attribute' => 'call_id',
+            'format' => 'raw',
+            'header' => 'Идентификатор вызова',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return base64_decode($model->call_id);
+            },
+        ],
+        [
             'attribute' => 'timestamp',
             'format' => 'raw',
             'header' => 'Время события',
             'value' => function ($model) {
                 /** @var Call $model */
                 return Yii::$app->formatter->asDatetime($model->timestamp, 'medium');
+            },
+        ],
+        [
+            'attribute' => 'seq',
+            'format' => 'raw',
+            'header' => 'Послед-ть',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return $model->seq;
             },
         ],
         [
