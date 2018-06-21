@@ -1,58 +1,88 @@
 <?php
+/**
+ * Mango Office API Yii2 module.
+ *
+ * @author Max Alexandrov <max@7u3.ru>
+ * @link https://github.com/maxodrom/yii2-mango-office-api
+ * @copyright Copyright (c) Max Alexandrov, 2018
+ */
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use maxodrom\mangooffice\models\events\Call;
 
-/** @var \maxodrom\mangooffice\models\events\Call[] $models */
-?>
+/** @var \yii\data\ArrayDataProvider $dataProvider */
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
-        <table class="table table-hover table-condensed table-bordered">
-            <thead>
-            <tr>
-                <td>Время события</td>
-                <td>Расположение</td>
-                <td>Состояние</td>
-                <td>Номер вызываемого абонента</td>
-                <td>Причина завершения вызова</td>
-            </tr>
-            </thead>
-            <?php foreach ($models as $model): ?>
-                <tbody>
-                <tr>
-                    <td>
-                        <?= Yii::$app->formatter->asDatetime($model->timestamp, 'medium'); ?>
-                    </td>
-                    <td>
-                        <span class="label label-<?= Call::getLocationCssClass()[$model->location] ?>">
-                            <?= Call::getLocationLabels()[$model->location] ?>
-                        </span>
-                    </td>
-                    <td>
-                        <span class="label label-<?= Call::getCallStateCssClass()[$model->call_state] ?>">
-                           <?= Call::getCallStateLabels()[$model->call_state] ?>
-                        </span>
-
-                    </td>
-                    <td>
-                        <?= $model->to_number ?>
-                    </td>
-                    <td>
-                        <?= $model->disconnect_reason != null ?
-                            Html::tag(
-                                'span',
-                                $model->disconnect_reason,
-                                [
-                                    'class' => 'label label-primary',
-                                    'title' => Call::$resultStatuses[$model->disconnect_reason],
-                                ]
-                            ) : '';
-                        ?>
-                    </td>
-                </tr>
-                </tbody>
-            <?php endforeach; ?>
-        </table>
-    </div>
-</div>
+echo GridView::widget([
+    'dataProvider' => $dataProvider,
+    'summary' => false,
+    'columns' => [
+        [
+            'attribute' => 'timestamp',
+            'format' => 'raw',
+            'header' => 'Время события',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return Yii::$app->formatter->asDatetime($model->timestamp, 'medium');
+            },
+        ],
+        [
+            'attribute' => 'location',
+            'format' => 'raw',
+            'header' => 'Расположение',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return Html::tag(
+                    'span',
+                    Call::getLocationLabels()[$model->location],
+                    [
+                        'class' => 'label label-' .
+                            Call::getLocationCssClass()[$model->location],
+                    ]
+                );
+            },
+        ],
+        [
+            'attribute' => 'all_state',
+            'format' => 'raw',
+            'header' => 'Состояние',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return Html::tag(
+                    'span',
+                    Call::getCallStateLabels()[$model->call_state],
+                    [
+                        'class' => 'label label-' .
+                            Call::getCallStateCssClass()[$model->call_state],
+                    ]
+                );
+            },
+        ],
+        [
+            'attribute' => 'to_number',
+            'format' => 'raw',
+            'header' => 'Номер вызываемого абонента',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return $model->to_number;
+            },
+        ],
+        [
+            'attribute' => 'disconnect_reason',
+            'format' => 'raw',
+            'header' => 'Причина завершения вызова',
+            'value' => function ($model) {
+                /** @var Call $model */
+                return $model->disconnect_reason != null ?
+                    Html::tag(
+                        'span',
+                        $model->disconnect_reason,
+                        [
+                            'class' => 'label label-primary',
+                            'title' => Call::$resultStatuses[$model->disconnect_reason],
+                        ]
+                    ) : '';
+            },
+        ],
+    ],
+]);

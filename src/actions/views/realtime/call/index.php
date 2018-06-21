@@ -60,19 +60,22 @@ CSS
                         return GridView::ROW_COLLAPSED;
                     },
                     'detail' => function ($model, $key, $index, $column) {
-                        /** @var Call $model */
-                        $detailedRecords = Call::find()
-                            ->where(['=', 'entry_id', $model->entry_id])
-                            ->orderBy([
-                                'timestamp' => SORT_ASC,
-                            ])
-                            ->all();
+                        /** @var \maxodrom\mangooffice\models\events\Call $model */
+                        $dataProvider = new \yii\data\ArrayDataProvider([
+                            'allModels' => Call::find()
+                                ->where(['=', '[[entry_id]]', $model->entry_id])
+                                ->orderBy([
+                                    'timestamp' => SORT_ASC,
+                                ])
+                                ->all(),
+                        ]);
 
-
-                        return Yii::$app->controller->renderPartial('@mangooffice/actions/views/realtime/call/_expand-row-details',
+                        return Yii::$app->controller->renderPartial(
+                            '@mangooffice/actions/views/realtime/call/_expand-row-details',
                             [
-                                'models' => $detailedRecords,
-                            ]);
+                                'dataProvider' => $dataProvider,
+                            ]
+                        );
                     },
                     'enableRowClick' => false,
                 ],
