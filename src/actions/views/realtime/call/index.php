@@ -104,14 +104,22 @@ CSS
                     'format' => 'raw',
                     'value' => function ($model) use ($phoneNumberUtil) {
                         /** @var \maxodrom\mangooffice\models\events\Call $model */
-                        $fromNumberObject = $phoneNumberUtil->parse($model->from_number, 'RU');
-                        $fromNumber = $phoneNumberUtil->format($fromNumberObject, PhoneNumberFormat::INTERNATIONAL);
+                        if (preg_match('/^\d+$/', $model->from_number)) {
+                            $fromNumberObject = $phoneNumberUtil->parse($model->from_number, 'RU');
+                            $fromNumber = $phoneNumberUtil->format($fromNumberObject, PhoneNumberFormat::INTERNATIONAL);
+                        } else {
+                            if (empty($model->from_number)) {
+                                $fromNumber = 'не удалось определить';
+                            } else {
+                                $fromNumber = $model->from_number;
+                            }
+                        }
 
                         return Html::tag(
                             'span',
                             $fromNumber,
                             [
-                                'class' => 'label label-primary',
+                                'class' => 'label label-' . ($fromNumber == 'не удалось определить' ? 'default' : 'primary'),
                             ]
                         );
                     },
