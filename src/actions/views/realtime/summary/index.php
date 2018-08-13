@@ -47,10 +47,26 @@ $this->title = 'Уведомления о завершении вызова';
                     'value' => function ($model) use ($phoneNumberUtil) {
                         /** @var \maxodrom\mangooffice\models\events\Summary $model */
 
-                        $fromNumberObject = $phoneNumberUtil->parse($model->from_number, 'RU');
-                        $fromNumber = $phoneNumberUtil->format($fromNumberObject, PhoneNumberFormat::INTERNATIONAL);
-                        $lineNumberObject = $phoneNumberUtil->parse($model->line_number, 'RU');
-                        $lineNumber = $phoneNumberUtil->format($lineNumberObject, PhoneNumberFormat::INTERNATIONAL);
+                        if (preg_match('/^\d+$/', $model->from_number)) {
+                            $fromNumberObject = $phoneNumberUtil->parse($model->from_number, 'RU');
+                            $fromNumber = $phoneNumberUtil->format($fromNumberObject, PhoneNumberFormat::INTERNATIONAL);
+                        } else {
+                            if (empty($model->from_number)) {
+                                $fromNumber = 'не удалось определить';
+                            } else {
+                                $fromNumber = $model->from_number;
+                            }
+                        }
+                        if (preg_match('/^\d+$/', $model->line_number)) {
+                            $lineNumberObject = $phoneNumberUtil->parse($model->line_number, 'RU');
+                            $lineNumber = $phoneNumberUtil->format($lineNumberObject, PhoneNumberFormat::INTERNATIONAL);
+                        } else {
+                            if (empty($model->line_number)) {
+                                $lineNumber = 'не удалось определить';
+                            } else {
+                                $lineNumber = $model->from_number;
+                            }
+                        }
 
                         $str = Html::tag(
                             'div',
