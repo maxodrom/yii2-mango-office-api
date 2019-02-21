@@ -54,6 +54,7 @@ class EventsController extends BaseController
         $disableCsrfValidationActions = [
             'call',
             'summary',
+            'dtmf',
         ];
 
         // your custom code here, if you want the code to run before action filters,
