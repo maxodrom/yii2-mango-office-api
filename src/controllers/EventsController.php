@@ -15,6 +15,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\Response;
 use maxodrom\mangooffice\models\events\Call;
+use maxodrom\mangooffice\models\events\Dtmf;
 use maxodrom\mangooffice\models\events\Summary;
 
 /**
@@ -179,6 +180,46 @@ class EventsController extends BaseController
         return [
             'success' => true,
             'message' => 'Summary notification was stored successfully.',
+        ];
+    }
+
+    /**
+     * Уведомление содержит информацию о нажатиях dtmf клавиш.
+     * Такое событие генерируется в сценарии,  когда  абонент  находиться  в  IVR  меню  и
+     * нажимает  dtmf  клавиши  на  устройстве.
+     *
+     * @return array
+     * @throws \yii\web\ServerErrorHttpException
+     */
+    public function actionDtmf()
+    {
+        $json = Json::decode(Yii::$app->request->getBodyParam('json', '{}'));
+
+        $model = new Dtmf();
+        $model->setAttributes([
+            'seq' => ArrayHelper::getValue($json, 'seq'),
+            'dtmf' => ArrayHelper::getValue($json, 'dtmf'),
+            'timestamp' => ArrayHelper::getValue($json, 'timestamp'),
+            'call_id' => ArrayHelper::getValue($json, 'call_id'),
+            'entry_id' => ArrayHelper::getValue($json, 'entry_id'),
+            'location' => ArrayHelper::getValue($json, 'location'),
+            'initiator' => ArrayHelper::getValue($json, 'initiator'),
+            'from_number' => ArrayHelper::getValue($json, 'from_number'),
+            'to_number' => ArrayHelper::getValue($json, 'to_number'),
+            'line_number' => ArrayHelper::getValue($json, 'line_number'),
+        ], false);
+
+        if (!$model->save()) {
+            $message = 'Cannot save Dtmf model. Possible validation errors: ' . Html::errorSummary($model);
+            Yii::error($message, __METHOD__);
+            throw new \yii\web\ServerErrorHttpException(
+                YII_DEBUG ? $message : ''
+            );
+        }
+
+        return [
+            'success' => true,
+            'message' => 'Dtmf notification was stored successfully.',
         ];
     }
 }
