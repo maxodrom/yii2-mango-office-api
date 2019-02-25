@@ -15,7 +15,17 @@ use maxodrom\mangooffice\Module;
 /**
  * Class Dtmf
  *
- * @property
+ * @property int $id
+ * @property int $seq
+ * @property string $dtmf
+ * @property int $timestamp
+ * @property string $call_id
+ * @property string $entry_id
+ * @property string $location
+ * @property string $initiator
+ * @property string $from_number
+ * @property string $to_number
+ * @property string $line_number
  * @package maxodrom\mangooffice\models\events
  */
 class Dtmf extends \yii\db\ActiveRecord
