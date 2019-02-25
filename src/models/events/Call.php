@@ -36,6 +36,8 @@ use maxodrom\mangooffice\Module;
  * @property string $task_id Идентификатор задачи исходящего обзвона, в результате которой появился вызов
  * @property string $callback_initiator Инициатор обратного звонка, в результате которого появился вызов
  * @since 1.0
+ *
+ * @property \maxodrom\mangooffice\models\events\Dtmf[] $dtmfs
  */
 class Call extends \yii\db\ActiveRecord
 {
@@ -323,5 +325,16 @@ class Call extends \yii\db\ActiveRecord
             self::LOCATION_ABONENT => 'success',
             self::LOCATION_QUEUE => 'default',
         ];
+    }
+
+    /**
+     * @return \maxodrom\mangooffice\models\events\DtmfQuery|\yii\db\ActiveQuery
+     */
+    public function getDtmfs()
+    {
+        return $this->hasMany(
+            Dtmf::class,
+            ['entry_id' => 'entry_id']
+        );
     }
 }
